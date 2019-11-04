@@ -1118,6 +1118,14 @@ if(WITH_TESTS)
   endforeach(sourcefile ${C_TEST_EXES})
 endif()
 
+set(C_EXES db/c_bench.c)
+foreach(sourcefile ${C_EXES})
+    string(REPLACE ".c" "" exename ${sourcefile})  # remore .c
+    string(REGEX REPLACE "^((.+)/)+" "" exename ${exename}) # remove dir
+    add_executable(${exename}${ARTIFACT_SUFFIX} ${sourcefile}) # target
+    target_link_libraries(${exename}${ARTIFACT_SUFFIX} ${ROCKSDB_IMPORT_LIB}) # libs
+endforeach(sourcefile ${C_EXES})
+
 option(WITH_TOOLS "build with tools" ON)
 if(WITH_TOOLS)
   add_subdirectory(tools)
